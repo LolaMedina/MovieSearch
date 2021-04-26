@@ -31,6 +31,11 @@ let displayMovies = url => {
             div.appendChild(text);
             main.appendChild(div);
         });
+    }).catch(err => {
+        const para = document.createElement('p');
+        para.textContent = err;
+        para.style.color = 'black';
+        main.append(para)
     });
 }
 
