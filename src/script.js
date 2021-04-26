@@ -5,15 +5,16 @@ const img_path = 'https://image.tmdb.org/t/p/w500//';
 // Select elements from html file
 const main = document.querySelector('#main');
 
-const truncate = (str,num) => {
-    if(str.length <= num){
-    return str
-}
-   return str.slice(0,num) + '...'
+const truncate = (str, num) => {
+    if(str.length >= num) {
+        str = str.split(' ')
+        return str.slice(0, num).join(' ') + '...'
+    } 
+   return str;
 }
 
 //Calling the movie API
-let displayMovies = url =>{
+let displayMovies = url => {
     fetch(url).then(res => res.json())
     .then(function(data){
         data.results.forEach(element =>{
@@ -23,13 +24,18 @@ let displayMovies = url =>{
             const text = document.createElement('p');
             
             movieTitle.innerHTML = `${element.title}`;
-            text.innerHTML = truncate(`${element.overview}`, 40);
+            text.innerHTML = truncate(`${element.overview}`, 10);
             image.src = img_path + element.poster_path;
             div.appendChild(image);
             div.appendChild(movieTitle);
             div.appendChild(text);
             main.appendChild(div);
         });
+    }).catch(err => {
+        const para = document.createElement('p');
+        para.textContent = err;
+        para.style.color = 'black';
+        main.append(para)
     });
 }
 
